@@ -3,6 +3,8 @@ C++ implementation of Johnson's algorithm for APSP
 
 This algorithm is used to find all pair shortest path problem from a given weighted graph.
 
+The graph is represented using an adjacency list. (u, v, w)
+
 Using Bellman-Ford's algorithm for reweighting the edges it can detect negeative weight cycles.
 
 Works for negative weighted edges .
