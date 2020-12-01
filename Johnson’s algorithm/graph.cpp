@@ -11,7 +11,7 @@ Graph ::Graph(vector<Edge>& edges, int n) {
 		adj_list[edge.src].push_back(make_pair(edge.dest, edge.weight));
 
 		//uncomment if you need undirected graph
-		//adj_list[edge.src].push_back(make_pair(edge.dest, edge.weight));
+		//adj_list[edge.dest].push_back(make_pair(edge.src, edge.weight));
 	}
 }
 
