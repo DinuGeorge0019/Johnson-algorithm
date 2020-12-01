@@ -19,8 +19,9 @@ class Graph
 {
 public:
 	int n;
-	vector<vector<int>> adj_matrix;
+	//vector<vector<int>> adj_matrix;
 	vector<Edge> edges;
+	vector<vector<pair<int, int>>> adj_list; // (u, v, w)
 	Graph(vector<Edge>& edges, int n);
 };
 

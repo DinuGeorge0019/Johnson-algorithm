@@ -1,42 +1,41 @@
 #include "graph.h"
 
 Graph ::Graph(vector<Edge>& edges, int n) {
-	adj_matrix.resize(n, vector<int>(n, INT_MAX));
 
+	adj_list.resize(n);
 	this->n = n;
 	this->edges = edges;
 
 	for (auto& edge : edges)
 	{
-		adj_matrix[edge.src][edge.dest] = edge.weight;
+		adj_list[edge.src].push_back(make_pair(edge.dest, edge.weight));
 
 		//uncomment if you need undirected graph
-		//adj_matrix[edge.dest][edge.src] = edge.weight;
+		//adj_list[edge.src].push_back(make_pair(edge.dest, edge.weight));
 	}
 }
 
 void print_graph(Graph& graph)
 {
-	for (int i = 0; i < graph.n; i++)
+	for (int src = 0; src < graph.n; src++)
 	{
-		cout << i << " -> ";
-		for (int j = 0; j < graph.n; j++)
+		cout << src << " -> ";
+		for (auto& dest : graph.adj_list[src])
 		{
-			if (i != j && graph.adj_matrix[i][j] != INT_MAX)
-			{
-				cout << j << " w:" << graph.adj_matrix[i][j] << ",  ";
-			}
+			cout << dest.first << " w:" << dest.second << ",  ";
 		}
 		cout << endl;
 	}
 }
+
+
 
 void write_random_graph(fstream& myfile)
 {
 	myfile.open("input.txt", ios::out | ios::trunc);
 
 	// Define the maximum number of vertices of the graph 
-	int MAX_VERTICES = 20;
+	int MAX_VERTICES = 15;
 
 	// Define the maximum number of edges 
 	int MAX_EDGES = 200;
@@ -60,7 +59,7 @@ void write_random_graph(fstream& myfile)
 
 		E = 4 + rand() % (MAX_EDGES - 4 + 1);
 
-		while (E > N * (N - 1)/2)               // we are asking for a more sparse like graph
+		while (E > N * (N - 1)/2)               // we are asking for a sparse  graph
 			E = 4 + rand() % (MAX_EDGES - 4 + 1);
 
 

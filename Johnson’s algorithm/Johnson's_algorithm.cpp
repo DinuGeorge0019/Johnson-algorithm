@@ -77,21 +77,9 @@ vector<int> Bellman_Ford(vector<Edge> edges, int n)
 
 }
 
-void Dijkstra(vector<vector<int>> graph, int src, fstream& myfile)
+void Dijkstra(vector<vector<pair<int, int>>> adj_list, int src, fstream& myfile)
 {
-	int n = graph.size();
-	vector<vector<pair<int, int>>> adj_list(n);
-
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			if (graph[i][j] != INT_MAX)
-			{
-				adj_list[i].push_back(make_pair(j, graph[i][j]));
-			}
-		}
-	}
+	int n = adj_list.size();
 
 	vector<int> parent(n);
 	parent[src] = -1;
@@ -156,23 +144,16 @@ void Johnson_algorithm(Graph graph, int idx, fstream& myfile)
 	}
 
 
-	vector<vector<int>> modified_graph(graph.n, vector<int>(graph.n));
+	vector<vector<pair<int, int>>> modified_graph = graph.adj_list;
 
-	for (int i = 0; i < graph.n; i++)
+	for (int src = 0; src < graph.n; src++)
 	{
-		for (int j = 0; j < graph.n; j++)
+		for (auto& dest : modified_graph[src])
 		{
-			if (graph.adj_matrix[i][j] != INT_MAX)
-			{
-				modified_graph[i][j] = graph.adj_matrix[i][j] + modify_weights[i] - modify_weights[j];
-			}
-			else
-			{
-				modified_graph[i][j] = INT_MAX;
-			}
-
+			dest.second = dest.second + modify_weights[src] - modify_weights[dest.first];
 		}
 	}
+
 
 	for (int i = 0; i < graph.n; i++)
 	{
