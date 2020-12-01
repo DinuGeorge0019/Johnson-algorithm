@@ -7,6 +7,8 @@ Using Bellman-Ford's algorithm for reweighting the edges it can detect negeative
 
 Works for negative weighted edges .
 
-Time complexity : O(V*E*LogV) -> one call of Bellman-Ford (O(E*V)) + V calls of Dijkstra(O(E*LogV))
+Time complexity : O(V*E*LogV) -> one call of Bellman-Ford (O(E*V)) + V calls of Dijkstra(O(E*LogV
+
 E -> number of edges
+
 V -> number of vertices
