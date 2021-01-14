@@ -2,6 +2,7 @@
 
 Graph ::Graph(vector<Edge>& edges, int n) {
 
+	adj_matrix.resize(n, vector<int>(n, INT_MAX));
 	adj_list.resize(n);
 	this->n = n;
 	this->edges = edges;
@@ -10,9 +11,25 @@ Graph ::Graph(vector<Edge>& edges, int n) {
 	{
 		adj_list[edge.src].push_back(make_pair(edge.dest, edge.weight));
 
+		adj_matrix[edge.src][edge.dest] = edge.weight;
+		
 		//uncomment if you need undirected graph
 		//adj_list[edge.src].push_back(make_pair(edge.dest, edge.weight));
+		//adj_matrix[edge.dest][edge.src] = edge.weight;
 	}
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			if (i == j)
+			{
+				adj_matrix[i][j] = 0;
+			}
+			else continue;
+		}
+	}
+
 }
 
 void print_graph(Graph& graph)
@@ -72,6 +89,13 @@ void write_random_graph(fstream& myfile)
 		{
 			int u = rand() % N;
 			int v = rand() % N;
+
+			if (u == v)
+			{
+				j--;
+				continue;
+			}
+
 			pair<int, int> edge = make_pair(u, v);
 			pair<int, int> reverse_edge = make_pair(v, u);
 
@@ -82,6 +106,9 @@ void write_random_graph(fstream& myfile)
 			{
 				u = rand() % N;
 				v = rand() % N;
+
+				if (u == v) continue;
+
 				edge = make_pair(u, v);
 				reverse_edge = make_pair(v, u);
 			}
@@ -90,7 +117,7 @@ void write_random_graph(fstream& myfile)
 
 		for (auto it = container.begin(); it != container.end(); ++it)
 		{
-			int wt = -30 + rand() % MAXWEIGHT;
+			int wt = - 30  + rand() % MAXWEIGHT;
 			myfile << it->first << " " << it->second << " " << wt << endl;
 		}
 

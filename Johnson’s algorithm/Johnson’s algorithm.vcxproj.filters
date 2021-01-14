@@ -24,13 +24,19 @@
     <ClCompile Include="Johnson%27s_algorithm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Roy_Floyd_algorithm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="output.txt">
-      <Filter>Source Files</Filter>
+    <Text Include="output_Johnson.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="output_Roy_Floyd.txt">
+      <Filter>Resource Files</Filter>
     </Text>
     <Text Include="input.txt">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +44,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Johnson%27s_algorithm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Roy_Floyd_algorithm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

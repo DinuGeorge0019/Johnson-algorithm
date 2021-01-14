@@ -142,14 +142,17 @@
     <ClCompile Include="graph.cpp" />
     <ClCompile Include="Johnson%27s_algorithm.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Roy_Floyd_algorithm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt" />
-    <Text Include="output.txt" />
+    <Text Include="output_Johnson.txt" />
+    <Text Include="output_Roy_Floyd.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph.h" />
     <ClInclude Include="Johnson%27s_algorithm.h" />
+    <ClInclude Include="Roy_Floyd_algorithm.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

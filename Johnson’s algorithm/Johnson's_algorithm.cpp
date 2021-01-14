@@ -1,7 +1,7 @@
 #include "Johnson's_algorithm.h"
 
 
-void print_path(vector<int> parent, int dest, fstream& myfile)
+void print_path(vector<int>& parent, int dest, fstream& myfile, vector<vector<pair<int, int>>> old_graph)
 {
 	vector<int> path;
 
@@ -14,12 +14,25 @@ void print_path(vector<int> parent, int dest, fstream& myfile)
 	reverse(path.begin(), path.end());
 
 
-	for (int i = 0; i < (int)path.size() - 1; i++)
+	for (int j = 0; j < (int)path.size() - 1; j++)
 	{
-		myfile << path[i] << "->";
+		myfile << path[j] << "->";
 	}
-	myfile << path[path.size() - 1];
+	myfile << path[path.size() - 1] << " ";
 
+	int weight = 0;
+	for (int j = 0; j < (int)path.size() - 1; j++)
+	{
+		for (auto& dest : old_graph[path[j]])
+		{
+			if (dest.first == path[j + 1])
+			{
+				weight += dest.second;
+			}
+		}
+	}
+
+	myfile << " w : " << weight;
 }
 
 
@@ -38,7 +51,7 @@ vector<int> Bellman_Ford(vector<Edge> edges, int n)
 		edges.push_back(new_edge);
 	}
 
-	for (int i = 0; i < n - 1; i++)
+	for (int i = 0; i < n; i++)
 	{
 		bool flag = false;
 		for (auto& edge : edges)
@@ -77,8 +90,10 @@ vector<int> Bellman_Ford(vector<Edge> edges, int n)
 
 }
 
-void Dijkstra(vector<vector<pair<int, int>>> adj_list, int src, fstream& myfile)
+void Dijkstra(vector<vector<pair<int, int>>> adj_list, int src, fstream& myfile, vector<vector<pair<int, int>>> old_graph, chrono::high_resolution_clock::time_point& start_point, chrono::high_resolution_clock::time_point& end_point)
 {
+	start_point = std::chrono::high_resolution_clock::now();
+
 	int n = adj_list.size();
 
 	vector<int> parent(n);
@@ -112,13 +127,14 @@ void Dijkstra(vector<vector<pair<int, int>>> adj_list, int src, fstream& myfile)
 		}
 	}
 
+	end_point = std::chrono::high_resolution_clock::now();
 
 	myfile << "Source : " << src << endl;
 	for (int i = 0; i < n; i++)
 	{
 		if (dist[i] == INT_MAX) continue;
-		myfile << src << " <-> " << i << " w : " << dist[i] << "  path : ";
-		print_path(parent, i, myfile);
+		myfile << src << " <-> " << i << "  path : ";
+		print_path(parent, i, myfile, old_graph);
 		myfile << endl;
 	}
 	myfile << endl;
@@ -127,17 +143,25 @@ void Dijkstra(vector<vector<pair<int, int>>> adj_list, int src, fstream& myfile)
 
 }
 
-void Johnson_algorithm(Graph graph, int idx, fstream& myfile)
+void Johnson_algorithm(const Graph& graph, int idx, fstream& myfile)
 {
 
-	myfile.open("output.txt", ios::out | ios::app);
+	myfile.open("output_Johnson.txt", ios::out | ios::app);
 	myfile << "< - - - - - - GRAPH " << idx << " - - - - - - > " << endl;
 
+
+	std::chrono::high_resolution_clock::time_point start_point = std::chrono::high_resolution_clock::now();
 
 	vector<int> modify_weights = Bellman_Ford(graph.edges, graph.n);
 
 	if (modify_weights.empty())
 	{
+
+		std::chrono::high_resolution_clock::time_point end_point = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double, std::milli> time_span = end_point - start_point;
+		std::cout << "Johnson's algorithm time : " << time_span.count() << " milliseconds.";
+		std::cout << std::endl;
+
 		myfile << "Graph contains negative weight cycle" << endl;
 		myfile.close();
 		return;
@@ -154,11 +178,23 @@ void Johnson_algorithm(Graph graph, int idx, fstream& myfile)
 		}
 	}
 
+	std::chrono::high_resolution_clock::time_point end_point = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double, std::milli> time_span = end_point - start_point;
 
 	for (int i = 0; i < graph.n; i++)
 	{
-		Dijkstra(modified_graph, i, myfile);
+		std::chrono::high_resolution_clock::time_point start_temp;
+		std::chrono::high_resolution_clock::time_point end_temp;
+
+		Dijkstra(modified_graph, i, myfile, graph.adj_list, start_temp, end_temp);
+
+		std::chrono::duration<double, std::milli> time_span_temp = end_temp - start_temp;
+
+		time_span += time_span_temp;
 	}
+
+	std::cout << "Johnson's algorithm time : " << time_span.count() << " milliseconds.";
+	std::cout << std::endl;
 
 
 	myfile.close();
